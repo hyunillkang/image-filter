@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image Filter</title>
+
+</head>
+
+<body>
+    <canvas id="canvas" width="0px" height="0px"></canvas>
+    <br>
+    <input type="file" id="uploader" accept="image/png, image/jpeg" />
+    <div id="color" style="width: 100px; height:50px; border: solid 1px black;">
+    </div>
+    
+    <input type="button" value="Orignal" onclick="recoverImageToOriginal()"/>
+    <input type="button" value="Grayscale" onclick="convertImageToGrayscale()" />
+</br>
+
+    Red: <input type="range" name="imageSlider" min="0" max="255" value="50"/>
+    Green: <input type="range" name="imageSlider" min="0" max="255" value="50"/>
+    Blue: <input type="range" name="imageSlider" min="0" max="255" value="50"/>
+    Alpha: <input type="range" name="imageSlider" min="0" max="255" value="50"/>
+</br>
+    <input type="button" value="change color" onclick="convertImageColor()"/>
+
+    
+
+</br>
+<input type="button" value="convolution test" onclick="convolutionTest()"/>
+    <script src="main.js"></script>
+    <script src="colorFilters.js"></script>
+</body>
+
+</html>
