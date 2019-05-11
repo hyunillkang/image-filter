@@ -1,4 +1,7 @@
 function applyBoxFilter() {
+
+    insertImageData();
+
     let filterSize = document.getElementById("filterSize").value;
 
     if (filterSize % 2 == 0) {
@@ -24,6 +27,8 @@ function applyBoxFilter() {
 
 function applyGaussianFilter() {
 
+    insertImageData();
+
     let filterSize = document.getElementById("filterSize").value;
 
     if (filterSize % 2 == 0) {
@@ -34,7 +39,6 @@ function applyGaussianFilter() {
 
     let sigma = document.getElementById("sigma").value;
     let constant = 1 / (2 * Math.PI * sigma * sigma);
-    console.log(constant);
 
     let filter = [];
 
@@ -54,8 +58,46 @@ function applyGaussianFilter() {
     calculateConvolution(imageMatrix, filter);
 
     imageMatrixToImageData(imageMatrix);
+
 }
 
+function applySobelFilter() {
+
+    insertImageData();
+
+    let xFilter = [
+        [-1, 0, 1],
+        [-2, 0, 2],
+        [-1, 0, 1]
+    ];
+
+    let xImageMatrix = imageDataToImageMatrix(imageData);
+
+    calculateConvolution(xImageMatrix, xFilter);
+
+    let yFilter = [
+        [-1, -2, -1],
+        [0, 0, 0],
+        [1, 2, 1]
+    ];
+
+    let yImageMatrix = imageDataToImageMatrix(imageData);
+
+    calculateConvolution(yImageMatrix, yFilter);
+
+    console.log(xImageMatrix);
+    for(let value in xImageMatrix) {
+        for(let row = 0; row < xImageMatrix[value].length; row++) {
+            for(let col = 0; col < xImageMatrix[value][0].length; col++) {
+                xImageMatrix[value][row][col] = Math.sqrt(
+                    xImageMatrix[value][row][col]*xImageMatrix[value][row][col] +
+                    yImageMatrix[value][row][col]*yImageMatrix[value][row][col])
+            }    
+        }
+    }
+    
+    imageMatrixToImageData(xImageMatrix, 0);
+}
 
 function imageDataToImageMatrix() {
 
@@ -102,40 +144,41 @@ function imageMatrixToImageData(imageMatrix) {
     let imageWidth = imageData.width;
     let imageHeight = imageData.height;
 
-    let convertedData = context.createImageData(imageWidth, imageHeight);
 
 
     let item = [];
     for (let row = 0; row < imageHeight; row++) {
         for (let col = 0; col < imageWidth; col++) {
 
-            convertedData.data[imageWidth * 4 * row + 4 * col] = imageMatrix.rChannel[row][col];// + 255;
-            convertedData.data[imageWidth * 4 * row + 4 * col + 1] = imageMatrix.gChannel[row][col];// + 255;
-            convertedData.data[imageWidth * 4 * row + 4 * col + 2] = imageMatrix.bChannel[row][col];// + 255;
-            convertedData.data[imageWidth * 4 * row + 4 * col + 3] = 255;//imageMatrix.aChannel[row][col];
+            imageData.data[imageWidth * 4 * row + 4 * col] = imageMatrix.rChannel[row][col];
+            imageData.data[imageWidth * 4 * row + 4 * col + 1] = imageMatrix.gChannel[row][col];
+            imageData.data[imageWidth * 4 * row + 4 * col + 2] = imageMatrix.bChannel[row][col];
+            imageData.data[imageWidth * 4 * row + 4 * col + 3] = 255;//imageMatrix.aChannel[row][col];
 
             item.push([row, col, imageWidth * 4 * row + 4 * col, imageMatrix.rChannel[row][col]]);
 
         }
     }
 
-    context.putImageData(convertedData, 0, 0);
+    context.putImageData(imageData, 0, 0);
+
 
 }
 
 function convolutionTest() {
 
-    let filter = [
-        [-1, 0, 1],
-        [-1, 0, 1],
-        [-1, 0, 1]
+    let yFilter = [
+        [-1, -2, -1],
+        [0, 0, 0],
+        [1, 2, 1]
     ];
 
-    let imageMatrix = imageDataToImageMatrix(imageData);
-    console.log(imageMatrix);
-    calculateConvolution(imageMatrix, filter);
+    let yImageMatrix = imageDataToImageMatrix(imageData);
 
-    imageMatrixToImageData(imageMatrix);
+    calculateConvolution(yImageMatrix, yFilter);
+
+
+        imageMatrixToImageData(yImageMatrix, 0);
 }
 
 function calculateConvolution(imageMatrix, filter) {

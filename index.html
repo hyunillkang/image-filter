@@ -13,18 +13,22 @@
 
     </br>
     <input type="button" value="Recover Image" onclick="recoverImageToOriginal()" />
-    </br>
+    <input type="button" value="Undo" onclick="undoImageFilter()"/>    
+</br>
     <!-- color filters -->
     <div>
-        <input type="button" value="Grayscale" onclick="convertImageToGrayscale()" />
-        </br>
+        <input type="button" value="Grayscale" onclick="applyGrayscale()" />
+        <input type="button" value="Sepia" onclick="applySepia()"/>
+        <input type="button" value="Invert" onclick="applyInvert()"/>
 
-        Red: <input type="range" name="imageSlider" min="0" max="255" value="50" />
-        Green: <input type="range" name="imageSlider" min="0" max="255" value="50" />
-        Blue: <input type="range" name="imageSlider" min="0" max="255" value="50" />
-        Alpha: <input type="range" name="imageSlider" min="0" max="255" value="50" />
+    </br>
+
+        Red: <input type="range" name="imageSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
+        Green: <input type="range" name="imageSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
+        Blue: <input type="range" name="imageSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
+        Alpha: <input type="range" name="imageSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
         </br>
-        <input type="button" value="change color" onclick="convertImageColor()" />
+        <input type="button" value="change color" onclick="applyRGBAChannel()" />
     </div>
 
 
@@ -34,13 +38,13 @@
     <div>
         <input type="button" value="convolution test" onclick="convolutionTest()" />
         </br>
-        filter size: <input type="number" id="filterSize" value="5"/>
-        sigma: <input type="number" id="sigma" value="0.3"/>
-        mean: <input type="number" id="mean" value="10"/>
-    </br>
-        <input type="button" value="Box Filter" onclick="applyBoxFilter()"/>
-        <input type="button" value="Gaussian Filter" onclick="applyGaussianFilter()"/>
-        
+        filter size: <input type="number" id="filterSize" value="5" />
+        sigma: <input type="number" id="sigma" value="0.3" />
+        mean: <input type="number" id="mean" value="10" />
+        </br>
+        <input type="button" value="Box Filter" onclick="applyBoxFilter()" />
+        <input type="button" value="Gaussian Filter" onclick="applyGaussianFilter()" />
+        <input type="button" value="Sobel Filter" onclick="applySobelFilter()" />
     </div>
     <script src="main.js"></script>
     <script src="color_filters.js"></script>

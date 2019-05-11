@@ -6,38 +6,33 @@ context.fillRect(0, 0, canvas.width, canvas.height);
 
 const uploader = document.getElementById("uploader");
 
-/*
-canvas.addEventListener("click", function (e) {
-    getColorData(e);
-});*/
 
 uploader.addEventListener("change", function (e) {
     uploadImage(e);
 });
 
+
+let originalImageData;
 let imageData;
-let image = new Image();
 
-image.onload = function () {
-    canvas.width = this.width;
-    canvas.height = this.height;
-    context.drawImage(image, 0, 0, this.width, this.height);
-    imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    console.log(imageData);
+let imageDataList = [];
+let listIndex = 0;
 
-}
-
-image.src = "src/hedgehog.jpg";
-
-
+uploadImage();
 
 function uploadImage(e) {
-    let file = e.target.files[0];
-    if (file == undefined) {
-        return;
-    }
 
-    let url = URL.createObjectURL(file);
+    let url;
+
+    if (e != undefined) {
+        let file = e.target.files[0];
+        if (file == undefined) {
+            return;
+        }
+        url = URL.createObjectURL(file);
+    } else {
+        url = "src/hedgehog.jpg";
+    }
 
     let image = new Image();
     image.onload = function () {
@@ -46,22 +41,54 @@ function uploadImage(e) {
         context.drawImage(image, 0, 0, this.width, this.height);
 
         imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        console.log(imageData);
+
+        originalImageData = copyImageData(imageData);        
     }
 
     image.src = url;
 }
 
-function getColorData(e) {
+function copyImageData(copyingImageData) {
+    
+    let copiedImageData;
 
-    var color = document.getElementById("color");
-    color.innerText = e.clientX + ", " + e.clientY;
-    let pixel = context.getImageData(e.offsetX, e.offsetY, 1, 1).data;
-    let rgba = "rgba(" + pixel[0] + ", " + pixel[1] + ", " + pixel[2] + ", " + pixel[3] + ")";
+    copiedImageData = context.createImageData(copyingImageData.width, copyingImageData.height);
 
-    color.style.background = rgba;
+    for(var i = 0; i < copyingImageData.data.length; i += 4) {
+        copiedImageData.data[i] = copyingImageData.data[i];
+        copiedImageData.data[i+1] = copyingImageData.data[i+1];
+        copiedImageData.data[i+2] = copyingImageData.data[i+2];
+        copiedImageData.data[i+3] = copyingImageData.data[i+3];
+    }
+
+
+    return copiedImageData;
 }
 
 function recoverImageToOriginal() {
+    context.putImageData(originalImageData, 0, 0);
+    imageData = copyImageData(originalImageData);
+}
+
+function insertImageData() {
+    if(imageDataList.length == 10) {
+        imageDataList.splice(0, 1);
+    }
+
+    imageDataList.push(copyImageData(imageData));
+    listIndex++;
+
+    console.log(imageDataList);
+}
+
+function undoImageFilter() {
+    listIndex--;
+    if(listIndex < 0) {
+        listIndex = 0;
+        return;
+    }
+    
+    imageData = imageDataList[listIndex];
+    
     context.putImageData(imageData, 0, 0);
 }
