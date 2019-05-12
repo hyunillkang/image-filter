@@ -17,20 +17,32 @@
 </br>
     <!-- color filters -->
     <div>
+    <div>
         <input type="button" value="Grayscale" onclick="applyGrayscale()" />
         <input type="button" value="Sepia" onclick="applySepia()"/>
         <input type="button" value="Invert" onclick="applyInvert()"/>
 
     </br>
-
-        Red: <input type="range" name="imageSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
-        Green: <input type="range" name="imageSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
-        Blue: <input type="range" name="imageSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
-        Alpha: <input type="range" name="imageSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
-        </br>
+<div>
+        Red: <input type="range" name="rgbaSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
+        Green: <input type="range" name="rgbaSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
+        Blue: <input type="range" name="rgbaSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
+        Alpha: <input type="range" name="rgbaSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
+    </div>
+    <div>
+        Hue: <input type="range" name="hsbSlider" min="0" max="360" value="100" onchange="adjustHSBChannel()" />
+        Saturation: <input type="range" name="hsbSlider" min="0" max="100" value="100" onchange="adjustHSBChannel()" />
+        Value: <input type="range" name="hsbSlider" min="0" max="200" value="100" onchange="adjustHSBChannel()" />
+    
+    </div>  
+    <div>
+        Brightness: <input type="range" name="brightnessSlider" min="0" max="100" value="50" onclick="adjustBrightness()"/>
+    </div> 
+        
+    </br>
         <input type="button" value="change color" onclick="applyRGBAChannel()" />
     </div>
-
+</div>
 
     </br>
     </br>
