@@ -2,7 +2,7 @@ function applyBoxFilter() {
 
     insertImageData();
 
-    let filterSize = document.getElementById("filterSize").value;
+    let filterSize = document.getElementById("filterSizeForBoxFilter").value;
 
     if (filterSize % 2 == 0) {
         alert("Filter size should be odd number");
@@ -29,7 +29,7 @@ function applyGaussianFilter() {
 
     insertImageData();
 
-    let filterSize = document.getElementById("filterSize").value;
+    let filterSize = document.getElementById("filterSizeForGaussianFilter").value;
 
     if (filterSize % 2 == 0) {
         alert("Filter size should be odd number");
@@ -65,15 +65,15 @@ function applySobelFilter() {
 
     insertImageData();
 
+    let sobleDirection = document.querySelector('input[name=sobelDirection]:checked').value;
+    console.log(sobleDirection);
+
+
     let xFilter = [
         [-1, 0, 1],
         [-2, 0, 2],
         [-1, 0, 1]
     ];
-
-    let xImageMatrix = imageDataToImageMatrix(imageData);
-
-    calculateConvolution(xImageMatrix, xFilter);
 
     let yFilter = [
         [-1, -2, -1],
@@ -81,22 +81,42 @@ function applySobelFilter() {
         [1, 2, 1]
     ];
 
-    let yImageMatrix = imageDataToImageMatrix(imageData);
+    let imageMatrix;
+    let xImageMatrix;
+    let yImageMatrix;
 
-    calculateConvolution(yImageMatrix, yFilter);
+    if (sobleDirection == 'X-Gradient' || sobleDirection == 'bi-Gradient') {
 
-    console.log(xImageMatrix);
-    for(let value in xImageMatrix) {
-        for(let row = 0; row < xImageMatrix[value].length; row++) {
-            for(let col = 0; col < xImageMatrix[value][0].length; col++) {
-                xImageMatrix[value][row][col] = Math.sqrt(
-                    xImageMatrix[value][row][col]*xImageMatrix[value][row][col] +
-                    yImageMatrix[value][row][col]*yImageMatrix[value][row][col])
-            }    
-        }
+        xImageMatrix = imageDataToImageMatrix(imageData);
+
+        calculateConvolution(xImageMatrix, xFilter);
+        imageMatrix = xImageMatrix;
+
     }
-    
-    imageMatrixToImageData(xImageMatrix, 0);
+
+    if (sobleDirection == 'Y-Gradient' || sobleDirection == 'bi-Gradient') {
+
+        yImageMatrix = imageDataToImageMatrix(imageData);
+
+        calculateConvolution(yImageMatrix, yFilter);
+        imageMatrix = yImageMatrix;
+
+    }
+
+    if (sobleDirection == 'bi-Gradient') {
+        for (let value in xImageMatrix) {
+            for (let row = 0; row < xImageMatrix[value].length; row++) {
+                for (let col = 0; col < xImageMatrix[value][0].length; col++) {
+                    xImageMatrix[value][row][col] = Math.sqrt(
+                        xImageMatrix[value][row][col] * xImageMatrix[value][row][col] +
+                        yImageMatrix[value][row][col] * yImageMatrix[value][row][col])
+                }
+            }
+        }
+
+        imageMatrix = xImageMatrix;
+    }
+    imageMatrixToImageData(imageMatrix, 0);
 }
 
 function imageDataToImageMatrix() {
@@ -166,19 +186,23 @@ function imageMatrixToImageData(imageMatrix) {
 }
 
 function convolutionTest() {
+/*
 
-    let yFilter = [
-        [-1, -2, -1],
-        [0, 0, 0],
-        [1, 2, 1]
+    console.log(imageDataList);
+    console.log(listIndex);
+*/
+    let filter = [
+        [-1, -1, -1],
+        [-1, 9, -1],
+        [-1, -1, -1]
     ];
 
-    let yImageMatrix = imageDataToImageMatrix(imageData);
+    let imageMatrix = imageDataToImageMatrix(imageData);
 
-    calculateConvolution(yImageMatrix, yFilter);
+    calculateConvolution(imageMatrix, filter);
 
 
-        imageMatrixToImageData(yImageMatrix, 0);
+    imageMatrixToImageData(imageMatrix, 0);
 }
 
 function calculateConvolution(imageMatrix, filter) {

@@ -82,7 +82,7 @@ function adjustRGBAChannel() {
 
 }
 
-function applyRGBAChannel() {
+function applyChannel() {
 
     insertImageData();
     imageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -109,7 +109,7 @@ function adjustBrightness() {
     context.putImageData(convertedData, 0, 0);
 }
 
-function adjustHSBChannel() {
+function adjustHSVChannel() {
     let hsbSlider = document.getElementsByName("hsbSlider");
 
     let hueSlider = hsbSlider[0];

@@ -3,64 +3,209 @@
 
 <head>
     <title>Image Filter</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
 
 <body>
-    <canvas id="canvas" width="0px" height="0px"></canvas>
-    <br>
-    <input type="file" id="uploader" accept="image/png, image/jpeg" />
+    <div class="row">
+        <div class="container col-8">
+            <canvas id="canvas" width="0px" height="0px"></canvas>
+        </div>
 
-    </br>
-    <input type="button" value="Recover Image" onclick="recoverImageToOriginal()" />
-    <input type="button" value="Undo" onclick="undoImageFilter()"/>    
-</br>
-    <!-- color filters -->
-    <div>
-    <div>
-        <input type="button" value="Grayscale" onclick="applyGrayscale()" />
-        <input type="button" value="Sepia" onclick="applySepia()"/>
-        <input type="button" value="Invert" onclick="applyInvert()"/>
+        <!-- navigator-->
 
-    </br>
-<div>
-        Red: <input type="range" name="rgbaSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
-        Green: <input type="range" name="rgbaSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
-        Blue: <input type="range" name="rgbaSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
-        Alpha: <input type="range" name="rgbaSlider" min="0" max="255" value="255" onchange="adjustRGBAChannel()" />
-    </div>
-    <div>
-        Hue: <input type="range" name="hsbSlider" min="0" max="360" value="100" onchange="adjustHSBChannel()" />
-        Saturation: <input type="range" name="hsbSlider" min="0" max="100" value="100" onchange="adjustHSBChannel()" />
-        Value: <input type="range" name="hsbSlider" min="0" max="200" value="100" onchange="adjustHSBChannel()" />
-    
-    </div>  
-    <div>
-        Brightness: <input type="range" name="brightnessSlider" min="0" max="100" value="50" onclick="adjustBrightness()"/>
-    </div> 
-        
-    </br>
-        <input type="button" value="change color" onclick="applyRGBAChannel()" />
-    </div>
-</div>
 
-    </br>
-    </br>
-    <!-- convolution filters-->
-    <div>
-        <input type="button" value="convolution test" onclick="convolutionTest()" />
-        </br>
-        filter size: <input type="number" id="filterSize" value="5" />
-        sigma: <input type="number" id="sigma" value="0.3" />
-        mean: <input type="number" id="mean" value="10" />
-        </br>
-        <input type="button" value="Box Filter" onclick="applyBoxFilter()" />
-        <input type="button" value="Gaussian Filter" onclick="applyGaussianFilter()" />
-        <input type="button" value="Sobel Filter" onclick="applySobelFilter()" />
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#file">
+                        File
+                    </a>
+                </div>
+                <div id="file" class="collapse">
+                    <div class="card-body">
+                        <input type="file" id="uploader" accept="image/png, image/jpeg" />
+
+                        </br>
+                        <input type="button" value="Recover Image" onclick="recoverImageToOriginal()" />
+                        <input type="button" value="Undo" onclick="undoImageFilter()" />
+                        </br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#colorFilters">
+                        Color Filters
+                    </a>
+                </div>
+                <div id="colorFilters" class="collapse">
+                    <div class="card-body">
+
+                        <input type="button" value="Grayscale" onclick="applyGrayscale()" />
+                        <input type="button" value="Sepia" onclick="applySepia()" />
+                        <input type="button" value="Invert" onclick="applyInvert()" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#brightness">
+                        Brightness
+                    </a>
+                </div>
+                <div id="brightness" class="collapse">
+                    <div class="card-body">
+                        Brightness: <input type="range" name="brightnessSlider" min="0" max="100" value="50"
+                            onclick="adjustBrightness()" />
+                        <input type="button" style="float: right;" value="Change Brightness" onclick="applyChannel()"/>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#rgbaChannel">
+                        RGBA Channel
+                    </a>
+                </div>
+                <div id="rgbaChannel" class="collapse">
+                    <div class="card-body">
+                        Red: <input type="range" name="rgbaSlider" min="0" max="255" value="255"
+                            onchange="adjustRGBAChannel()" />
+                        </br>
+                        Green: <input type="range" name="rgbaSlider" min="0" max="255" value="255"
+                            onchange="adjustRGBAChannel()" />
+                        </br>
+                        Blue: <input type="range" name="rgbaSlider" min="0" max="255" value="255"
+                            onchange="adjustRGBAChannel()" />
+                        </br>
+                        Alpha: <input type="range" name="rgbaSlider" min="0" max="255" value="255"
+                            onchange="adjustRGBAChannel()" />
+                        <input type="button" value="Change Adjustment" style="float: right;"
+                            onclick="applyChannel()" />
+
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#hsvChannel">
+                        HSV Channel
+                    </a>
+                </div>
+                <div id="hsvChannel" class="collapse">
+                    <div class="card-body">
+
+                        Hue: <input type="range" name="hsbSlider" min="0" max="360" value="100"
+                            onchange="adjustHSVChannel()" />
+                        </br>
+                        Saturation: <input type="range" name="hsbSlider" min="0" max="100" value="100"
+                            onchange="adjustHSVChannel()" />
+                        </br>
+                        Value: <input type="range" name="hsbSlider" min="0" max="100" value="100"
+                            onchange="adjustHSVChannel()" />
+
+                        <input type="button" value="Change Adjustment" style="float: right;"
+                            onclick="applyChannel()" />
+                    </div>
+                </div>
+            </div>
+            <!-- convolution filters-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#boxFilter">
+                        Box Filter
+                    </a>
+                </div>
+                <div id="boxFilter" class="collapse">
+                    <div class="card-body">
+                        Filter Size: <input type="number" id="filterSizeForBoxFilter" value="5" />
+
+                        <input type="button" value="Box Filter" style="float: right;" onclick="applyBoxFilter()" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#gaussianFilter">
+                        Gaussian Filter
+                    </a>
+                </div>
+                <div id="gaussianFilter" class="collapse">
+                    <div class="card-body">
+                        Filter Size: <input type="number" id="filterSizeForGaussianFilter" value="5"/>
+                    </br>
+                        Sigma: <input type="number" id="sigma" value="0.3" />
+                        <input type="button" value="Gaussian Filter" style="float: right;"
+                            onclick="applyGaussianFilter()" />
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#sobelFilter">
+                        Sobel Filter
+                    </a>
+                </div>
+                <div id="sobelFilter" class="collapse">
+                    <div class="card-body">
+                        Gradient Direction</br>
+                        <input type="radio" value="bi-Gradient" name="sobelDirection" checked>
+                        Bidirectional-Gradient
+                        </br>
+                        <input type="radio" value="X-Gradient" name="sobelDirection">
+                        X-Gradient
+                        </br>
+                        <input type="radio" value="Y-Gradient" name="sobelDirection">
+                        Y-Gradient
+                        <input type="button" value="Sobel Filter" style="float: right;" onclick="applySobelFilter()" />
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                    <div class="card-header">
+                            <a class="card-link" data-toggle="collapse" href="#sharpenFilter">
+                                Sharpen Filter
+                            </a>
+                        </div>
+                        <div id="sharpenFilter" class="collapse">
+                            <div class="card-body">
+                                <input type="button" value="Sharpen Filter" style="float: right;" onclick="convolutionTest()" />
+                            </div>
+                        </div>
+            </div>
+
+            <div>
+                <input type="button" value="debug" onclick="convolutionTest()" />
+                </br>
+            </div>
+        </div>
+
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+
     <script src="main.js"></script>
     <script src="color_filters.js"></script>
     <script src="convolution_filters.js"></script>
+
 </body>
 
 </html>

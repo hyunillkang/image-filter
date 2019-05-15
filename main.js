@@ -42,7 +42,8 @@ function uploadImage(e) {
 
         imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
-        originalImageData = copyImageData(imageData);        
+        originalImageData = copyImageData(imageData);       
+//        insertImageData(); 
     }
 
     image.src = url;
@@ -66,6 +67,9 @@ function copyImageData(copyingImageData) {
 }
 
 function recoverImageToOriginal() {
+
+    insertImageData();
+
     context.putImageData(originalImageData, 0, 0);
     imageData = copyImageData(originalImageData);
 }
@@ -73,15 +77,17 @@ function recoverImageToOriginal() {
 function insertImageData() {
     if(imageDataList.length == 10) {
         imageDataList.splice(0, 1);
+        listIndex--;
     }
 
     imageDataList.push(copyImageData(imageData));
     listIndex++;
 
-    console.log(imageDataList);
 }
 
 function undoImageFilter() {
+    console.log(listIndex);
+    imageDataList.splice(listIndex);
     listIndex--;
     if(listIndex < 0) {
         listIndex = 0;
@@ -89,6 +95,8 @@ function undoImageFilter() {
     }
     
     imageData = imageDataList[listIndex];
-    
+
+    console.log(imageDataList);
+
     context.putImageData(imageData, 0, 0);
 }
