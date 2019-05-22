@@ -216,7 +216,7 @@ function calculateConvolution(imageMatrix, filter) {
 
     for (let value in imageMatrix) {
 
-        let convolutedMatrix = Array(imageHeight).fill().map(() => Array(imageWidth).fill(0));
+        let newMatrix = Array(imageHeight).fill().map(() => Array(imageWidth).fill(0));
 
         for (var imageRow = halfFilterSize; imageRow < imageHeight - halfFilterSize; imageRow++) {
             for (var imageCol = halfFilterSize; imageCol < imageWidth - halfFilterSize; imageCol++) {
@@ -229,13 +229,56 @@ function calculateConvolution(imageMatrix, filter) {
                         convolutedValue += imageMatrix[value][imageRow + filterRow][imageCol + filterCol] * filter[halfFilterSize - filterRow][halfFilterSize - filterCol];
                     }
                 }
-                convolutedMatrix[imageRow][imageCol] = parseInt(convolutedValue);
+                newMatrix[imageRow][imageCol] = parseInt(convolutedValue);
             }
         }
 
-        imageMatrix[value] = convolutedMatrix;
+        imageMatrix[value] = newMatrix;
 
     }
 
+}
 
+function applyMedianFilter() {
+    console.log("aa");
+
+    let filterSize = document.getElementById("filterSizeForMedianFilter").value;
+
+    if (filterSize % 2 == 0) {
+        alert("Filter size should be odd number");
+        return;
+    }
+
+    let halfFilterSize = parseInt(filterSize / 2);
+    let medianValue = parseInt(filterSize*filterSize/2);
+
+    let imageWidth = imageData.width;
+    let imageHeight = imageData.height;
+
+    let imageMatrix = imageDataToImageMatrix(imageData);
+
+    for(let value in imageMatrix) {
+
+        let newMatrix = Array(imageHeight).fill().map(() => Array(imageWidth).fill(0));
+
+        for (var imageRow = halfFilterSize; imageRow < imageHeight - halfFilterSize; imageRow++) {
+            for (var imageCol = halfFilterSize; imageCol < imageWidth - halfFilterSize; imageCol++) {
+                let temp = [];
+
+                for (var filterRow = -halfFilterSize; filterRow <= halfFilterSize; filterRow++) {
+                    for (var filterCol = -halfFilterSize; filterCol <= halfFilterSize; filterCol++) {
+                        temp.push(imageMatrix[value][imageRow + filterRow][imageCol + filterCol])
+                    }
+                }
+                temp.sort();
+
+                newMatrix[imageRow][imageCol] = temp[medianValue];
+                
+            }
+        }
+
+        imageMatrix[value] = newMatrix;
+    }
+
+    imageMatrixToImageData(imageMatrix);
 }

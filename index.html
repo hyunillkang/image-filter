@@ -62,7 +62,7 @@
                     <div class="card-body">
                         Brightness: <input type="range" name="brightnessSlider" min="0" max="100" value="50"
                             onclick="adjustBrightness()" />
-                        <input type="button" style="float: right;" value="Change Brightness" onclick="applyChannel()"/>
+                        <input type="button" style="float: right;" value="Change Brightness" onclick="applyChannel()" />
                     </div>
                 </div>
 
@@ -86,8 +86,7 @@
                         </br>
                         Alpha: <input type="range" name="rgbaSlider" min="0" max="255" value="255"
                             onchange="adjustRGBAChannel()" />
-                        <input type="button" value="Change Adjustment" style="float: right;"
-                            onclick="applyChannel()" />
+                        <input type="button" value="Change Adjustment" style="float: right;" onclick="applyChannel()" />
 
                     </div>
                 </div>
@@ -110,8 +109,7 @@
                         Value: <input type="range" name="hsbSlider" min="0" max="100" value="100"
                             onchange="adjustHSVChannel()" />
 
-                        <input type="button" value="Change Adjustment" style="float: right;"
-                            onclick="applyChannel()" />
+                        <input type="button" value="Change Adjustment" style="float: right;" onclick="applyChannel()" />
                     </div>
                 </div>
             </div>
@@ -139,8 +137,8 @@
                 </div>
                 <div id="gaussianFilter" class="collapse">
                     <div class="card-body">
-                        Filter Size: <input type="number" id="filterSizeForGaussianFilter" value="5"/>
-                    </br>
+                        Filter Size: <input type="number" id="filterSizeForGaussianFilter" value="5" />
+                        </br>
                         Sigma: <input type="number" id="sigma" value="0.3" />
                         <input type="button" value="Gaussian Filter" style="float: right;"
                             onclick="applyGaussianFilter()" />
@@ -171,16 +169,31 @@
                 </div>
             </div>
             <div class="card">
-                    <div class="card-header">
-                            <a class="card-link" data-toggle="collapse" href="#sharpenFilter">
-                                Sharpen Filter
-                            </a>
-                        </div>
-                        <div id="sharpenFilter" class="collapse">
-                            <div class="card-body">
-                                <input type="button" value="Sharpen Filter" style="float: right;" onclick="convolutionTest()" />
-                            </div>
-                        </div>
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#sharpenFilter">
+                        Sharpen Filter
+                    </a>
+                </div>
+                <div id="sharpenFilter" class="collapse">
+                    <div class="card-body">
+                        <input type="button" value="Sharpen Filter" style="float: right;" onclick="convolutionTest()" />
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#medianFilter">
+                        Median Filter
+                    </a>
+                </div>
+                <div id="medianFilter" class="collapse">
+                    <div class="card-body">
+                        Filter Size: <input type="number" id="filterSizeForMedianFilter" value="5" />
+
+                        <input type="button" value="Median Filter" style="float: right;"
+                            onclick="applyMedianFilter()" />
+                    </div>
+                </div>
             </div>
 
             <div>
